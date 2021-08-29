@@ -26,9 +26,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-/*
- * Test the dashboard gamepad integration.
- */
+import org.firstinspires.ftc.teamcode.pipelines.*;
 @Autonomous
 public class JoystickControl extends LinearOpMode {
 
@@ -81,7 +79,7 @@ public class JoystickControl extends LinearOpMode {
                 ), cameraMonitorViewId
         );
 
-        webcam.setPipeline(new SamplePipeline());
+        webcam.setPipeline(new SkystonePipeline(640));
 
         /*
          * Open the connection to the camera device. New in v1.4.0 is the ability
@@ -108,7 +106,7 @@ public class JoystickControl extends LinearOpMode {
         });
 
 
-        FtcDashboard.getInstance().startCameraStream(webcam, 0);
+        dashboard.startCameraStream(webcam, 0);
 
         waitForStart();
 
@@ -160,14 +158,14 @@ public class JoystickControl extends LinearOpMode {
                             input.cols()/4,
                             input.rows()/4),
                     new Point(
-                            input.cols()*(3f/4f),
-                            input.rows()*(3f/4f)),
+                            input.cols()*(2f/2f),
+                            input.rows()*(2f/2f)),
                     new Scalar(0, 255, 0), 4);
 
             /**
              * NOTE: to see how to get data from your pipeline to your OpMode as well as how
              * to change which stage of the pipeline is rendered to the viewport when it is
-             * tapped, please see {@link PipelineStageSwitchingExample}
+             * tapped, please see {@link JoystickControl}
              */
 
             return input;
