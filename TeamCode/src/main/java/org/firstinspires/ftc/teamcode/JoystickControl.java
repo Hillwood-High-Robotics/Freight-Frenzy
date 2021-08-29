@@ -35,7 +35,6 @@ public class JoystickControl extends LinearOpMode {
     private DcMotor right;
     private DcMotor left;
 
-    public static final String VUFORIA_LICENSE_KEY = "AYAjvln/////AAABmdl8PQbwoELHgN1xDrvdpaYKYHPPZ9h6xxAlaTcD6R9O77TtjJz0KH3+1ePQ/sC6eHb4k/MTg1YmsNhZ7OUUWxym0Wk3mS0oxEAWQYxBAfAKRu/7EuyUf6OiQ1+Yf6RFnUN5Z7ryxJEwBrLz78+8mTwi/s1jfS5m3ZatY4OLqpfNg5jGm6zv2d7TQVwFQ6sbSA3BsVgi1LBXEfV9W3FtFXl0dRXPd3JRtL4D4ilfuISGEv8Rt+BhUg63uNtzp39fl9Am2NY942aXaRB4Zv5XfuD4klrAkZmBfk8wPTYko5D+Umec+JlxxK82NHJf/cPncNYXEqbLByr5i/Vu+ONqSaWIpBc7wKYfCOvHWAQ67P+u";
     OpenCvCamera webcam;
 
 
@@ -69,8 +68,18 @@ public class JoystickControl extends LinearOpMode {
         if (isStopRequested()) return;
         msStuckDetectStop = 2500;
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId",
+                "id",
+                hardwareMap.appContext.getPackageName()
+        );
+
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(
+                hardwareMap.get(
+                        WebcamName.class,
+                        "Webcam 1"
+                ), cameraMonitorViewId
+        );
 
         webcam.setPipeline(new SamplePipeline());
 
