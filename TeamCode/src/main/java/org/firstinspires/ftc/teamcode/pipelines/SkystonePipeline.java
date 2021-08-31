@@ -11,9 +11,17 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Detects the color yellow, and all associated gradients. This is used for
+ * detecting so called "skystones" that were given durring ths Skystone challenge year.
+ * This is useful because it gives an example of how we can use computer vision to our advantage
+ *
+ * @author Owen Rummage
+ * @version 1.0
+ */
 
 public class SkystonePipeline extends OpenCvPipeline {
-    enum SkystoneLocation {
+    public enum SkystoneLocation {
         LEFT,
         RIGHT,
         NONE

@@ -29,23 +29,24 @@ import java.lang.reflect.Modifier;
 import org.firstinspires.ftc.teamcode.pipelines.*;
 
 /**
- * This program has basic driving control of the robot, it also includes a very basic instance of
- * FtcDashboard, this is used primarially for viewing the camera remotely so we can see what the
- * robot is doing remotely. This will be particularly useful in the case that we are not directly
- * in front of the robot. It also has logging metrics of all of the connected controllers and motors
- * for more debug information
+ * This program is used as an example of the Skystone detection algorythm.
+ * It will turn the robot twoards the skystone at any given time
  *
  * @author Owen Rummage
  * @version 1.1
  */
 
 @Autonomous
-public class JoystickControl extends LinearOpMode {
+public class Skystone extends LinearOpMode {
 
     private DcMotor right;
     private DcMotor left;
 
     OpenCvCamera webcam;
+    int width = 640;
+    int height = 480;
+
+    SkystonePipeline pipeline = new SkystonePipeline(width);
 
 
     /**
@@ -111,7 +112,7 @@ public class JoystickControl extends LinearOpMode {
          * to see, so we want to use LiveViewPipeline for now, because it gives a better view with
          * no included mask for a color
          */
-        webcam.setPipeline(new LiveViewPipeline());
+        webcam.setPipeline(pipeline);
 
 
         // This is what happens when the camera is opened as a device. (once its ready)
@@ -124,7 +125,7 @@ public class JoystickControl extends LinearOpMode {
                  * Tell the camera to start streaming images to us, use a supported resolution
                  * or an EXCEPTION will be Thrown.
                  */
-                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(width, height, OpenCvCameraRotation.UPRIGHT);
             }
         });
 
@@ -144,9 +145,20 @@ public class JoystickControl extends LinearOpMode {
             telemetry.addData("motor_left_speed", left.getPower());
             telemetry.addData("motor_right_speed", right.getPower());
 
-            // Set the motor power to joystick values, so they move
-            left.setPower(gamepad2.left_stick_y);
-            right.setPower(gamepad2.right_stick_y);
+            if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.RIGHT){
+                right.setPower(50);
+                left.setPower(-50);
+            }
+
+            if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.LEFT){
+                right.setPower(-50);
+                left.setPower(50);
+            }
+
+            if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.NONE){
+                right.setPower(0);
+                left.setPower(0);
+            }
 
             // Update the telemetry screen to FTCDashboard
             telemetry.update();
