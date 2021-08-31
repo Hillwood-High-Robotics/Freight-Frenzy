@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.utils.LoggingEngine;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -29,8 +30,8 @@ import java.lang.reflect.Modifier;
 import org.firstinspires.ftc.teamcode.pipelines.*;
 
 /**
- * This program is used as an example of the Skystone detection algorythm.
- * It will turn the robot twoards the skystone at any given time
+ * This program is used as an example of the Skystone detection algorithm.
+ * It will turn the robot towards the skystone at any given time
  *
  * @author Owen Rummage
  * @version 1.1
@@ -42,35 +43,14 @@ public class Skystone extends LinearOpMode {
     private DcMotor right;
     private DcMotor left;
 
+    private LoggingEngine log;
+
     OpenCvCamera webcam;
     int width = 640;
     int height = 480;
 
     SkystonePipeline pipeline = new SkystonePipeline(width);
 
-
-    /**
-     * Logs a given gamepads values to the telemetry object that is passed,
-     * this allows for us to view live data about the controller from the
-     * graphing engine on the FTCDashboard application.
-     *
-     * @param telemetry The telemetry instance for logging, called from {@link FtcDashboard}
-     * @param gamepad   The gamepad that is being logged
-     * @param prefix    The Prefix of the log message, for example "gamepad1"
-     */
-    private static void logGamepad(Telemetry telemetry, Gamepad gamepad, String prefix) {
-        telemetry.addData(prefix + "Synthetic",
-                gamepad.getGamepadId() == Gamepad.ID_UNASSOCIATED);
-        for (Field field : gamepad.getClass().getFields()) {
-            if (Modifier.isStatic(field.getModifiers())) continue;
-
-            try {
-                telemetry.addData(prefix + field.getName(), field.get(gamepad));
-            } catch (IllegalAccessException e) {
-                // ignore for now
-            }
-        }
-    }
 
     /**
      * The main Op-Mode code, what runs 60 or so times per second
@@ -81,6 +61,8 @@ public class Skystone extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+
+        log = new LoggingEngine(telemetry);
 
         right = hardwareMap.dcMotor.get("right");
         left = hardwareMap.dcMotor.get("left");
@@ -138,21 +120,21 @@ public class Skystone extends LinearOpMode {
 
         while (opModeIsActive()) {
             // Log the Gamepads
-            logGamepad(telemetry, gamepad1, "gamepad1");
-            logGamepad(telemetry, gamepad2, "gamepad2");
+            log.logGamepad(gamepad1, "gamepad1");
+            log.logGamepad(gamepad2, "gamepad2");
 
             //Log the Motors
-            telemetry.addData("motor_left_speed", left.getPower());
-            telemetry.addData("motor_right_speed", right.getPower());
+            log.logMotor(left, "left");
+            log.logMotor(right, "right");
 
             if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.RIGHT){
-                right.setPower(50);
-                left.setPower(-50);
+                right.setPower(-50);
+                left.setPower(50);
             }
 
             if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.LEFT){
-                right.setPower(-50);
-                left.setPower(50);
+                right.setPower(50);
+                left.setPower(-50);
             }
 
             if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.NONE){

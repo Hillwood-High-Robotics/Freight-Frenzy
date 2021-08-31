@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
  * A pipeline that creates a basic crosshair on the screen, this is used to see what
  * the robot sees. This is useful in a situation where we are driving the robot
  * remotely and do not have direct line of sight. Such as when sending it from Engineering
- * to Cullinairy and back to retrieve food.
+ * to Culinary and back to retrieve food.
  *
  * @author Owen Rummage
  * @version 1.1

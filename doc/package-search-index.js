@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.firstinspires.ftc.teamcode"},{"l":"org.firstinspires.ftc.teamcode.pipelines"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.firstinspires.ftc.teamcode"},{"l":"org.firstinspires.ftc.teamcode.pipelines"},{"l":"org.firstinspires.ftc.teamcode.utils"}]

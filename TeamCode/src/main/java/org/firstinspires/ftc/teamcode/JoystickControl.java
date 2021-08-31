@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.utils.LoggingEngine;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -30,7 +31,7 @@ import org.firstinspires.ftc.teamcode.pipelines.*;
 
 /**
  * This program has basic driving control of the robot, it also includes a very basic instance of
- * FtcDashboard, this is used primarially for viewing the camera remotely so we can see what the
+ * FtcDashboard, this is used primarily for viewing the camera remotely so we can see what the
  * robot is doing remotely. This will be particularly useful in the case that we are not directly
  * in front of the robot. It also has logging metrics of all of the connected controllers and motors
  * for more debug information
@@ -45,31 +46,14 @@ public class JoystickControl extends LinearOpMode {
     private DcMotor right;
     private DcMotor left;
 
+    private LoggingEngine log;
+
     OpenCvCamera webcam;
 
+    int width = 640;
+    int height = 480;
 
-    /**
-     * Logs a given gamepads values to the telemetry object that is passed,
-     * this allows for us to view live data about the controller from the
-     * graphing engine on the FTCDashboard application.
-     *
-     * @param telemetry The telemetry instance for logging, called from {@link FtcDashboard}
-     * @param gamepad   The gamepad that is being logged
-     * @param prefix    The Prefix of the log message, for example "gamepad1"
-     */
-    private static void logGamepad(Telemetry telemetry, Gamepad gamepad, String prefix) {
-        telemetry.addData(prefix + "Synthetic",
-                gamepad.getGamepadId() == Gamepad.ID_UNASSOCIATED);
-        for (Field field : gamepad.getClass().getFields()) {
-            if (Modifier.isStatic(field.getModifiers())) continue;
 
-            try {
-                telemetry.addData(prefix + field.getName(), field.get(gamepad));
-            } catch (IllegalAccessException e) {
-                // ignore for now
-            }
-        }
-    }
 
     /**
      * The main Op-Mode code, what runs 60 or so times per second
@@ -80,6 +64,8 @@ public class JoystickControl extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+
+        log = new LoggingEngine(telemetry);
 
         right = hardwareMap.dcMotor.get("right");
         left = hardwareMap.dcMotor.get("left");
@@ -124,7 +110,7 @@ public class JoystickControl extends LinearOpMode {
                  * Tell the camera to start streaming images to us, use a supported resolution
                  * or an EXCEPTION will be Thrown.
                  */
-                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(width, height, OpenCvCameraRotation.UPRIGHT);
             }
         });
 
@@ -137,12 +123,13 @@ public class JoystickControl extends LinearOpMode {
 
         while (opModeIsActive()) {
             // Log the Gamepads
-            logGamepad(telemetry, gamepad1, "gamepad1");
-            logGamepad(telemetry, gamepad2, "gamepad2");
+            log.logGamepad(gamepad1, "gamepad1");
+            log.logGamepad(gamepad2, "gamepad2");
 
             //Log the Motors
-            telemetry.addData("motor_left_speed", left.getPower());
-            telemetry.addData("motor_right_speed", right.getPower());
+            log.logMotor(left, "left");
+            log.logMotor(right, "right");
+
 
             // Set the motor power to joystick values, so they move
             left.setPower(gamepad2.left_stick_y);
