@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pipelines;
 
+import org.firstinspires.ftc.teamcode.utils.GraphicsEngine;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -18,6 +19,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class LiveViewPipeline extends OpenCvPipeline
 {
 
+    GraphicsEngine engine = new GraphicsEngine();
     /**
      *
      * @param  input The frame to be processed
@@ -27,26 +29,10 @@ public class LiveViewPipeline extends OpenCvPipeline
     public Mat processFrame(Mat input)
     {
         //Draw Crosshair X line
-        Imgproc.line(
+        engine.drawCrosshair(
                 input,
-                new Point(
-                        0,
-                        input.rows()/2),
-                new Point(
-                        input.cols(),
-                        input.rows()/2),
-                new Scalar(0, 255, 0), 4);
-
-        //Draw Crosshair Y line
-        Imgproc.line(
-                input,
-                new Point(
-                        input.cols()/2,
-                        0),
-                new Point(
-                        input.cols()/2,
-                        input.rows()),
-                new Scalar(0, 255, 0), 4);
+                new Scalar(255, 0, 0)
+        );
 
 
         return input;

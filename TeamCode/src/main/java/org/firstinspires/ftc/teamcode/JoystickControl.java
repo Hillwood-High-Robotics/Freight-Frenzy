@@ -122,13 +122,13 @@ public class JoystickControl extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            // Log the Gamepads
-            log.logGamepad(gamepad1, "gamepad1");
-            log.logGamepad(gamepad2, "gamepad2");
-
-            //Log the Motors
-            log.logMotor(left, "left");
-            log.logMotor(right, "right");
+//            // Log the Gamepads
+//            log.logGamepad(gamepad1, "gamepad1");
+//            log.logGamepad(gamepad2, "gamepad2");
+//
+//            //Log the Motors
+//            log.logMotor(left, "left");
+//            log.logMotor(right, "right");
 
 
             // Set the motor power to joystick values, so they move
@@ -136,7 +136,7 @@ public class JoystickControl extends LinearOpMode {
             right.setPower(gamepad2.right_stick_y);
 
             // Update the telemetry screen to FTCDashboard
-            telemetry.update();
+            //telemetry.update();
         }
     }
 }

@@ -9,7 +9,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import com.acmerobotics.dashboard.telemetry.*;
-
+/**
+ * The basic Logging Engine, for logging things to a MultiTelemetry object
+ *
+ * @author Owen Rummage
+ * @version 1.0
+ */
 public class LoggingEngine {
     public Telemetry telemetryHandler;
 

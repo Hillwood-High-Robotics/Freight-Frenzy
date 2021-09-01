@@ -49,7 +49,7 @@ public class Skystone extends LinearOpMode {
     int width = 640;
     int height = 480;
 
-    SkystonePipeline pipeline = new SkystonePipeline(width);
+    SkystonePipeline pipeline;
 
 
     /**
@@ -61,6 +61,7 @@ public class Skystone extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+        pipeline = new SkystonePipeline(telemetry);
 
         log = new LoggingEngine(telemetry);
 
@@ -127,17 +128,17 @@ public class Skystone extends LinearOpMode {
             log.logMotor(left, "left");
             log.logMotor(right, "right");
 
-            if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.RIGHT){
-                right.setPower(-50);
-                left.setPower(50);
+            if(pipeline.getLocation() == SkystonePipeline.Location.RIGHT){
+                right.setPower(0.3);
+                left.setPower(-0.3);
             }
 
-            if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.LEFT){
-                right.setPower(50);
-                left.setPower(-50);
+            if(pipeline.getLocation() == SkystonePipeline.Location.LEFT){
+                right.setPower(-0.3);
+                left.setPower(0.3);
             }
 
-            if(pipeline.getLocation() == SkystonePipeline.SkystoneLocation.NONE){
+            if(pipeline.getLocation() == SkystonePipeline.Location.NOT_FOUND){
                 right.setPower(0);
                 left.setPower(0);
             }
