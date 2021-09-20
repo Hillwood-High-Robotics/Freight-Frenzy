@@ -46,8 +46,8 @@ public class Skystone extends LinearOpMode {
     private LoggingEngine log;
 
     OpenCvCamera webcam;
-    int width = 640;
-    int height = 480;
+    int width = 320;
+    int height = 240;
 
     SkystonePipeline pipeline;
 

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -45,6 +46,9 @@ public class JoystickControl extends LinearOpMode {
 
     private DcMotor right;
     private DcMotor left;
+    private DcMotor flag;
+
+    private Servo camera;
 
     private LoggingEngine log;
 
@@ -69,74 +73,102 @@ public class JoystickControl extends LinearOpMode {
 
         right = hardwareMap.dcMotor.get("right");
         left = hardwareMap.dcMotor.get("left");
+        flag = hardwareMap.dcMotor.get("flag");
+
+        camera = hardwareMap.servo.get("camera");
 
 
         right.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        int position = 0;
 
 
 
         if (isStopRequested()) return;
-        msStuckDetectStop = 2500;
+//        msStuckDetectStop = 2500;
+//
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+//                "cameraMonitorViewId",
+//                "id",
+//                hardwareMap.appContext.getPackageName()
+//        );
+//
+//        webcam = OpenCvCameraFactory.getInstance().createWebcam(
+//                hardwareMap.get(
+//                        WebcamName.class,
+//                        "Webcam 1"
+//                ), cameraMonitorViewId
+//        );
+//
+//        /*
+//         * This code would enable the masking for the Skystones, with it it is very hard
+//         * to see, so we want to use LiveViewPipeline for now, because it gives a better view with
+//         * no included mask for a color
+//         */
+//        webcam.setPipeline(new LiveViewPipeline());
+//
+//
+//        // This is what happens when the camera is opened as a device. (once its ready)
+//        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+//        {
+//            @Override
+//            public void onOpened()
+//            {
+//                /*
+//                 * Tell the camera to start streaming images to us, use a supported resolution
+//                 * or an EXCEPTION will be Thrown.
+//                 */
+//                webcam.startStreaming(width, height, OpenCvCameraRotation.UPRIGHT);
+//            }
+//        });
+//
+//
+//        // Send the camera stream to FTCDashboard
+//        dashboard.startCameraStream(webcam, 0);
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "cameraMonitorViewId",
-                "id",
-                hardwareMap.appContext.getPackageName()
-        );
-
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(
-                hardwareMap.get(
-                        WebcamName.class,
-                        "Webcam 1"
-                ), cameraMonitorViewId
-        );
-
-        /*
-         * This code would enable the masking for the Skystones, with it it is very hard
-         * to see, so we want to use LiveViewPipeline for now, because it gives a better view with
-         * no included mask for a color
-         */
-        webcam.setPipeline(new LiveViewPipeline());
-
-
-        // This is what happens when the camera is opened as a device. (once its ready)
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                /*
-                 * Tell the camera to start streaming images to us, use a supported resolution
-                 * or an EXCEPTION will be Thrown.
-                 */
-                webcam.startStreaming(width, height, OpenCvCameraRotation.UPRIGHT);
-            }
-        });
-
-
-        // Send the camera stream to FTCDashboard
-        dashboard.startCameraStream(webcam, 0);
+        right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Wait for the start of the Op-Mode
         waitForStart();
 
         while (opModeIsActive()) {
-//            // Log the Gamepads
-//            log.logGamepad(gamepad1, "gamepad1");
-//            log.logGamepad(gamepad2, "gamepad2");
-//
-//            //Log the Motors
-//            log.logMotor(left, "left");
-//            log.logMotor(right, "right");
+            // Log the Gamepads
+            log.logGamepad(gamepad1, "gamepad1");
+            log.logGamepad(gamepad2, "gamepad2");
+
+            // Log the Motors
+            log.logMotor(left, "left");
+            log.logMotor(right, "right");
 
 
-            // Set the motor power to joystick values, so they move
-            left.setPower(gamepad2.left_stick_y);
-            right.setPower(gamepad2.right_stick_y);
+            if(gamepad2.dpad_left){
+                camera.setPosition(0.1);
+            }
+            if(gamepad2.dpad_up){
+                camera.setPosition(0.25);
+            }
+            if(gamepad2.dpad_right){
+                camera.setPosition(0.4);
+            }
+            if(gamepad2.dpad_down){
+                camera.setPosition(0.9);
+            }
+
+            flag.setPower(gamepad2.left_trigger);
+
+
+            if(gamepad2.left_bumper){
+                // Set the motor power to joystick values, so they move
+                left.setPower(gamepad2.left_stick_y*1.5);
+                right.setPower(gamepad2.right_stick_y);
+            }else{
+                // Set the motor power to joystick values, so they move
+                left.setPower(gamepad2.left_stick_y/2.9);
+                right.setPower(gamepad2.right_stick_y/3);
+            }
 
             // Update the telemetry screen to FTCDashboard
-            //telemetry.update();
+            log.update();
         }
     }
 }

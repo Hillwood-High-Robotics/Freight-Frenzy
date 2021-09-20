@@ -28,7 +28,7 @@ public class GraphicsEngine {
                 new Point(
                         input.cols(),
                         input.rows()/2),
-                color, 4);
+                color, 1);
 
         //Draw Crosshair Y line
         this.drawLine(
@@ -39,7 +39,7 @@ public class GraphicsEngine {
                 new Point(
                         input.cols()/2,
                         input.rows()),
-                color, 4);
+                color, 1);
     }
 
     /**

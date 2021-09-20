@@ -63,4 +63,12 @@ public class LoggingEngine {
         telemetryHandler.addData(prefix + "_POSITION", motor.getCurrentPosition());
         telemetryHandler.addData(prefix + "_MODE", motor.getMode());
     }
+
+    /**
+     * Update the Telemetry
+     */
+    public void update(){
+        // Update Telemetry Handler
+        telemetryHandler.update();
+    }
 }

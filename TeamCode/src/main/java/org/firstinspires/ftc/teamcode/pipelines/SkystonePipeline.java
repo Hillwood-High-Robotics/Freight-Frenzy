@@ -26,14 +26,16 @@ public class SkystonePipeline extends OpenCvPipeline {
         RIGHT,
         NOT_FOUND
     }
+
+
     private Location location;
 
     static final Rect LEFT_ROI = new Rect(
             new Point(0, 0),
-            new Point(320, 480));
+            new Point(160, 240));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(321, 0),
-            new Point(640, 480));
+            new Point(161, 0),
+            new Point(320, 240));
     static double PERCENT_COLOR_THRESHOLD = 0.1;
 
     public SkystonePipeline(Telemetry t) { telemetry = t; }
@@ -51,8 +53,8 @@ public class SkystonePipeline extends OpenCvPipeline {
         Mat left = mat.submat(LEFT_ROI);
         Mat right = mat.submat(RIGHT_ROI);
 
-        double leftValue = Core.sumElems(left).val[0] / LEFT_ROI.area() / 255;
-        double rightValue = Core.sumElems(right).val[0] / RIGHT_ROI.area() / 255;
+        double leftValue = Core.sumElems(left).val[0] / LEFT_ROI.area() / 30;
+        double rightValue = Core.sumElems(right).val[0] / RIGHT_ROI.area() / 30;
 
         left.release();
         right.release();
