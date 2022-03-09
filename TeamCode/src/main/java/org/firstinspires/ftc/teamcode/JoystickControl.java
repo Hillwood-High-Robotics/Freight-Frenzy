@@ -187,22 +187,27 @@ public class JoystickControl extends LinearOpMode {
             }
 
 
+            //Reset motors
             front_left.setPower(0);
             front_right.setPower(0);
             back_left.setPower(0);
             back_right.setPower(0);
 
+            //Open Claw
             if(gamepad1.x){
                 claw_close.setPosition(0.1);
             }
 
+            //Close Claw
             if(gamepad1.y){
                 claw_close.setPosition(0.8);
             }
 
+            //Set triggers to arm lift
             arm_lift.setPower(gamepad1.left_trigger*5);
             arm_lift.setPower(-gamepad1.right_trigger*5);
 
+            //Reset arm so it doesnt run forever
             arm_lift.setPower(0);
             // Update the telemetry screen to FTCDashboard
             log.update();
